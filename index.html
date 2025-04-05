@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collector Candy ($CC) - Level Up Your Collection!</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'Pixel';
+            src: url('https://cdn.jsdelivr.net/npm/pixelify-sans@1.0.0/fonts/PixelifySans-Bold.ttf');
+            font-weight: bold;
+            font-style: normal;
+        }
+        
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-blue: #00ffff;
+            --neon-green: #00ff66;
+            --neon-purple: #9900ff;
+            --neon-yellow: #ffff00;
+        }
+        
+        * {
+            cursor: url('https://cdn.jsdelivr.net/gh/alvarotrigo/pagePiling.js/examples/imgs/cursor.png'), auto;
+        }
+        
+        body {
+            font-family: 'VT323', monospace;
+            background-color: #000;
+            color: #fff;
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255, 0, 255, 0.1) 2px, rgba(255, 0, 255, 0.1) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 255, 255, 0.1) 2px, rgba(0, 255, 255, 0.1) 4px);
+            letter-spacing: 0.5px;
+            font-size: 18px;
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            position: relative;
+        }
+        
+        .container::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            background: linear-gradient(rgba(255, 0, 255, 0.15) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 255, 0.15) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: -1;
+        }
+        
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.3;
+            text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.8);
+        }
+        
+        .neon-text {
+            animation: neon 1.5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes neon {
+            from {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--neon-pink), 0 0 20px var(--neon-pink), 0 0 25px var(--neon-pink);
+            }
+            to {
+                text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--neon-blue), 0 0 20px var(--neon-blue), 0 0 25px var(--neon-blue);
+            }
+        }
+        
+        .candy-gradient {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink), var(--neon-blue));
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        
+        .candy-border {
+            border: 4px solid;
+            border-image-slice: 1;
+            border-width: 4px;
+            border-image-source: linear-gradient(to right, var(--neon-pink), var(--neon-blue));
+            position: relative;
+        }
+        
+        .candy-border::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue), var(--neon-green), var(--neon-purple));
+            background-size: 400% 400%;
+            z-index: -1;
+            filter: blur(8px);
+            animation: gradient 15s ease infinite;
+        }
+        
+        .section {
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            padding: 1.5rem;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid var(--neon-purple);
+            box-shadow: 0 0 15px var(--neon-purple), inset 0 0 10px var(--neon-purple);
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(to right, rgba(153, 0, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(153, 0, 255, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .section h2 {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, var(--neon-pink), var(--neon-blue));
+        }
+        
+        .pixel-btn {
+            background: black;
+            color: white;
+            border: 3px solid var(--neon-blue);
+            box-shadow: 0 0 8px var(--neon-blue), inset 0 0 8px var(--neon-blue);
+            padding: 0.5em 1.5em;
+            font-family: 'Press Start 2P', cursive;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        
+        .pixel-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--neon-blue), inset 0 0 15px var(--neon-blue);
+        }
+        
+        .pixel-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .pixel-btn:hover::before {
+            left: 100%;
+        }
+        
+        .pixel-box {
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid;
+            border-image-slice: 1;
+            border-image-source: linear-gradient(to right, var(--neon-pink), var(--neon-blue));
+            padding: 1.5rem;
+            position: relative;
+            transition: all 0.3s;
+        }
+        
+        .pixel-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(153, 0, 255, 0.3);
+        }
+        
+        .pixel-candy {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-color: var(--neon-pink);
+            border: 2px solid #fff;
+            position: relative;
+            transform: rotate(45deg);
+            margin-right: 10px;
+            box-shadow: 0 0 8px var(--neon-pink);
+        }
+        
+        .pixel-candy::before,
+        .pixel-candy::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background-color: white;
+        }
+        
+        .pixel-candy::before {
+            top: 3px;
+            left: 3px;
+        }
+        
+        .pixel-candy::after {
+            bottom: 3px;
+            right: 3px;
+        }
+        
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0) 50%, rgba(0, 0, 0, 0.1) 50%, rgba(0, 0, 0, 0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 999;
+            opacity: 0.15;
+        }
+        
+        .token-pill {
+            background: black;
+            border: 3px solid var(--neon-purple);
+            box-shadow: 0 0 10px var(--neon-purple), inset 0 0 8px var(--neon-purple);
+            border-radius: 0;
+            padding: 0.8rem 1.5rem;
+            color: white;
+            font-weight: bold;
+            display: inline-block;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.8rem;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .token-pill::before {
+            content: '';
+            position: absolute;
+            left: -3px;
+            top: -3px;
+            width: calc(100% + 6px);
+            height: calc(100% + 6px);
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue), var(--neon-green), var(--neon-purple));
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            z-index: -1;
+        }
+        
+        .social-btn {
+            display: inline-block;
+            width: 64px;
+            height: 64px;
+            margin: 0 10px;
+            background-color: black;
+            border: 3px solid var(--neon-green);
+            box-shadow: 0 0 10px var(--neon-green), inset 0 0 8px var(--neon-green);
+            position: relative;
+            transition: all 0.3s;
+            overflow: hidden;
+        }
+        
+        .social-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px var(--neon-green), inset 0 0 15px var(--neon-green);
+        }
+        
+        .social-btn i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            color: white;
+            text-shadow: 0 0 8px white;
+        }
+        
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: 0.5s;
+        }
+        
+        .social-btn:hover::before {
+            left: 100%;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .pixel-icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            position: relative;
+        }
+        
+        .pixel-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: var(--neon-blue);
+            clip-path: polygon(
+                25% 0%, 75% 0%, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0% 75%, 0% 25%
+            );
+            box-shadow: 0 0 8px var(--neon-blue);
+        }
+        
+        .ascii-art {
+            font-family: monospace;
+            font-size: 0.6rem;
+            line-height: 1.2;
+            white-space: pre;
+            color: var(--neon-green);
+            margin-bottom: 1rem;
+        }
+        
+        /* Retro scrollbar */
+        ::-webkit-scrollbar {
+            width: 15px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: black;
+            border-left: 1px solid var(--neon-purple);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--neon-purple);
+            border: 2px solid black;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--neon-pink);
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+    
+    <header class="candy-gradient text-white py-8 shadow-lg">
+        <div class="container mx-auto px-4 md:px-8 flex flex-col items-center">
+            <div class="ascii-art text-center">
+           _____      _ _           _             _____                 _       
+          / ____|    | | |         | |           / ____|               | |      
+         | |     ___ | | | ___  ___| |_ ___  _ _| |     __ _ _ __   __| |_   _ 
+         | |    / _ \| | |/ _ \/ __| __/ _ \| '__| |    / _` | '_ \ / _` | | | |
+         | |___| (_) | | |  __/ (__| || (_) | |  | |___| (_| | | | | (_| | |_| |
+          \_____\___/|_|_|\___|\___|\__\___/|_|   \_____\__,_|_| |_|\__,_|\__, |
+                                                                            __/ |
+                                                                           |___/ 
+            </div>
+            <div class="relative mb-4">
+                <div class="text-4xl md:text-5xl font-bold pixel-font tracking-wider relative z-10 neon-text">
+                    Collector Candy
+                </div>
+                <div class="absolute -top-3 -right-6 transform rotate-15 float">
+                    <span class="text-4xl">🍬</span>
+                </div>
+            </div>
+            <p class="text-xl text-center max-w-2xl pixel-font" style="font-size: 12px; line-height: 1.8;">
+                Your destination for unique collectibles and exclusive items.
+            </p>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 md:px-8 py-8">
+        <!-- About Section -->
+        <section class="section rounded-none mt-8">
+            <div class="flex items-center mb-6">
+                <div class="pixel-candy"></div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white pixel-font" style="font-size: 16px;">About Collector Candy</h2>
+            </div>
+            <div class="space-y-4">
+                <p class="text-lg">
+                    Think of Collector Candy like the Rare Candy from Pokémon — each dose of Collector Candy ($CC) boosts your collection's power. Share your best collecting tips, restock alerts, and hidden gems, and get rewarded in $CC!
+                </p>
+                <p class="text-lg">
+                    Collectors often share invaluable insights and leads. Collector Candy is our token of appreciation for community members who help fellow collectors grow.
+                </p>
+            </div>
+            <!-- Pixel art decoration -->
+            <div class="absolute bottom-2 right-2 opacity-70">
+                <div style="color: var(--neon-green); font-family: monospace; font-size: 10px; line-height: 1;">
+                    +--+<br>
+                    |[]|<br>
+                    +--+
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Get $CC Section -->
+        <section class="section rounded-none mt-8">
+            <div class="flex items-center mb-6">
+                <div class="pixel-candy"></div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white pixel-font" style="font-size: 16px;">How to Get $CC</h2>
+            </div>
+            <ul class="space-y-6 list-none pl-0">
+                <li class="flex items-start pixel-box">
+                    <div class="pixel-icon flex-shrink-0 mt-1"></div>
+                    <div>
+                        <strong class="text-neon-green">Community Tipping:</strong> Post your best collecting alpha on X (Twitter) or Warpcast. Fellow collectors can tip you in $CC as thanks.
+                    </div>
+                </li>
+                <li class="flex items-start pixel-box">
+                    <div class="pixel-icon flex-shrink-0 mt-1"></div>
+                    <div>
+                        <strong class="text-neon-green">Buy on DEX:</strong> Easily purchase $CC on DexScreener using our convenient trade link.
+                    </div>
+                </li>
+                <li class="flex items-start pixel-box">
+                    <div class="pixel-icon flex-shrink-0 mt-1"></div>
+                    <div>
+                        <strong class="text-neon-green">Instant Transactions:</strong> Simply ask @bankrbot on X to buy $CC or send it to anyone easily—quick, simple, and secure.
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        <!-- Token Details Section -->
+        <section class="section rounded-none mt-8">
+            <div class="flex items-center mb-6">
+                <div class="pixel-candy"></div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white pixel-font" style="font-size: 16px;">Token Details</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div class="flex items-center pixel-box">
+                        <div class="pixel-icon flex-shrink-0"></div>
+                        <div><strong class="text-neon-pink">Name:</strong> Collector Candy</div>
+                    </div>
+                    <div class="flex items-center pixel-box">
+                        <div class="pixel-icon flex-shrink-0"></div>
+                        <div><strong class="text-neon-pink">Symbol:</strong> CC</div>
+                    </div>
+                    <div class="flex items-center pixel-box">
+                        <div class="pixel-icon flex-shrink-0"></div>
+                        <div><strong class="text-neon-pink">Blockchain:</strong> Base (layer-2)</div>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex items-center pixel-box">
+                        <div class="pixel-icon flex-shrink-0"></div>
+                        <div><strong class="text-neon-pink">Contract Address:</strong> [0x1234…]</div>
+                    </div>
+                    <div class="flex items-center pixel-box">
+                        <div class="pixel-icon flex-shrink-0"></div>
+                        <div><strong class="text-neon-pink">Initial Supply:</strong> 100,000,000,000 CC</div>
+                    </div>
+                    <div class="flex items-center pixel-box">
+                        <div class="pixel-icon flex-shrink-0"></div>
+                        <div>Check <a href="#" class="text-neon-blue hover:text-neon-green font-medium transition-colors">live price and liquidity here</a>.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Roadmap Section -->
+        <section class="section rounded-none mt-8">
+            <div class="flex items-center mb-6">
+                <div class="pixel-candy"></div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white pixel-font" style="font-size: 16px;">Roadmap & Future Perks</h2>
+            </div>
+            <div class="p-4 candy-border">
+                <p class="text-lg mb-6">
+                    We're excited to roll out future expansions, including NFT badges, community challenges, and a "gym badge" style system to showcase your collector achievements.
+                </p>
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="pixel-box hover:border-neon-pink">
+                        <div class="text-3xl mb-2 float">🏆</div>
+                        <h3 class="font-bold text-neon-pink pixel-font" style="font-size: 12px;">NFT BADGES</h3>
+                        <p>Earn exclusive digital collectibles</p>
+                    </div>
+                    <div class="pixel-box hover:border-neon-blue">
+                        <div class="text-3xl mb-2 float">🎮</div>
+                        <h3 class="font-bold text-neon-blue pixel-font" style="font-size: 12px;">COMMUNITY CHALLENGES</h3>
+                        <p>Participate in themed collecting events</p>
+                    </div>
+                    <div class="pixel-box hover:border-neon-green">
+                        <div class="text-3xl mb-2 float">🥇</div>
+                        <h3 class="font-bold text-neon-green pixel-font" style="font-size: 12px;">GYM BADGE SYSTEM</h3>
+                        <p>Showcase your collector achievements</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Pixelated game elements -->
+            <div class="absolute top-10 right-4 opacity-40">
+                <div style="color: var(--neon-purple); font-family: monospace; font-size: 10px; line-height: 1;">
+                    /\\<br>
+                    /  \\<br>
+                    |[]|<br>
+                    |__|
+                </div>
+            </div>
+        </section>
+
+        <!-- Community Section -->
+        <section class="section rounded-none mt-8">
+            <div class="flex items-center mb-6">
+                <div class="pixel-candy"></div>
+                <h2 class="text-2xl md:text-3xl font-bold text-white pixel-font" style="font-size: 16px;">Join the Community</h2>
+            </div>
+            <div class="text-center p-6">
+                <p class="text-lg mb-6">Connect with us on:</p>
+                <div class="flex justify-center space-x-6">
+                    <a href="#" class="social-btn">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-btn">
+                        <i class="fas fa-comments"></i>
+                    </a>
+                </div>
+                <p class="mt-8 text-lg font-medium">Share your tips, earn your $CC, and level up together!</p>
+            </div>
+        </section>
+
+        <!-- Call to Action -->
+        <section class="mt-12 text-center">
+            <div class="token-pill text-xl px-8 py-3 mx-auto">
+                COLLECT • SHARE • EARN
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-6 text-center mt-12 border-t-2 border-neon-purple">
+        <div class="container mx-auto px-4">
+            <p class="text-neon-blue">© 2025 Collector Candy 🍬✨</p>
+            <div class="ascii-art text-center mt-4">
+   _____   _____
+  / ____| / ____|
+ | |     | |     
+ | |     | |     
+ | |____| |____ 
+  \_____|\_____| 
+            </div>
+        </div>
+    </footer>
+    
+    <!-- 90s-inspired animated cursor trail -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.querySelector('body');
+            
+            body.addEventListener('mousemove', function(e) {
+                const trail = document.createElement('div');
+                trail.className = 'cursor-trail';
+                trail.style.left = e.pageX + 'px';
+                trail.style.top = e.pageY + 'px';
+                trail.style.position = 'absolute';
+                trail.style.width = '8px';
+                trail.style.height = '8px';
+                trail.style.backgroundColor = ['#ff00ff', '#00ffff', '#00ff66', '#9900ff'][Math.floor(Math.random() * 4)];
+                trail.style.borderRadius = '0';
+                trail.style.zIndex = '9999';
+                trail.style.pointerEvents = 'none';
+                
+                body.appendChild(trail);
+                
+                setTimeout(function() {
+                    trail.style.transition = 'all 0.5s ease';
+                    trail.style.opacity = '0';
+                    trail.style.transform = 'scale(0.5)';
+                    
+                    setTimeout(function() {
+                        trail.remove();
+                    }, 500);
+                }, 100);
+            });
+        });
+    </script>
+</body>
+</html>
